@@ -1,13 +1,49 @@
 body {
   margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(180deg,
+    #2b1165 0%,
+    rgba(26, 58, 130, 1) 37%,
+    rgba(171, 36, 177, 1) 69%,
+    #f54171 100%
+  );
+  height: 100vh;
+
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Cool vaporwave background from https://codepen.io/mtsgeneroso/pen/LYEWBMd */
+.overlay {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: 5px 5px, 5px 5px;
+  background-position:  -1px -1px, -1px -1px;
+  background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  mix-blend-mode: difference;
+  z-index: -1;
+}
+
+ .glitch {
+  clip-path: polygon(0 0, 100% 0, 100% .5em, 0 .5em);
+  animation: glitch 10s linear infinite;
+}
+ 
+ @keyframes glitch {
+  to {
+   clip-path: polygon(0 calc(100% - .5em), 100% calc(100% - .5em), 0 100%, 0 100%)
+  } 
 }
