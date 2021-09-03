@@ -1,4 +1,4 @@
-import { CELL_SIZE } from "./Constants";
+import { CELL_SIZE, NUM_COLS, NUM_ROWS } from "./Constants";
 import { GridCell, CellType } from "./Interfaces";
 
 export const getNearestCell = (coords: Array<number>): Array<number> => {
@@ -24,12 +24,26 @@ export const getStartCell = (grid: {[key: string]: GridCell}): string | void => 
   return getTypeOfCell(grid, CellType.Start)
 }
 
-export const getAdjacent = (world: { [key: string]: GridCell }, position: string): Array<string> => {
-  
-  return []
+export const getAdjacent = (world: { [key: string]: GridCell }, key: string): Array<string> => {
+  const {x,y} = parseKey(key);
+  const adjacent = [];
+
+  if (x > 0) {
+    adjacent.push(`${x-1},${y}`)
+  }
+  if (y > 0) {
+    adjacent.push(`${x},${y-1}`)
+  }
+  if (x < NUM_COLS - 1) {
+    adjacent.push(`${x+1},${y}`)
+  }
+  if (y < NUM_ROWS - 1) {
+    adjacent.push(`${x},${y+1}`)
+  }
+  return adjacent
 }
 
 export const parseKey = (key: string): { x: number, y: number } => {
-  let [x, y] = key.split(",").map(Number);
+  const [x, y] = key.split(",").map(Number);
   return {x,y}
 }

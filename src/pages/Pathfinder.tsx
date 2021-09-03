@@ -1,10 +1,11 @@
-import React, {useState} from 'react'
-import {createTheme, ThemeProvider, Typography, Box, makeStyles, CssBaseline } from '@material-ui/core';
+import React, {useState, useEffect} from 'react'
+import {createTheme, ThemeProvider, Typography,  makeStyles } from '@material-ui/core';
 
 import Header from '../components/header/Header'
 import Grid from '../components/grid/Grid'
 
 import {Algorithm, CellType, GridCell } from '../helpers/Interfaces';
+import { NUM_COLS, NUM_ROWS } from '../helpers/Constants';
 
 const theme = createTheme({
   palette: {
@@ -24,6 +25,32 @@ const Pathfinder = (): JSX.Element => {
   const [type, setType] = useState(CellType.Start);
   const [world, setWorld] = useState({});
   const [algorithm, setAlgorithm] = useState(Algorithm.AStar)
+
+  // Initializes world on mount
+  // Scuffed map storing x,y as a string since storing array[x,y] can only be gotten by reference
+  // Has better performance than using a 2d array due to faster deep copy.
+  useEffect(() => {
+    
+    let map: { [key: string]: GridCell } = {}
+    for (let x = 0; x < NUM_COLS; x++){
+      for (let y = 0; y < NUM_ROWS; y++){
+        map[`${x},${y}`] =  {type: CellType.Empty, x: x, y: y}
+      }
+    }
+
+    // Set random start and end positions.
+    let x1 = Math.floor(Math.random() * NUM_COLS);
+    let y1 = Math.floor(Math.random() * NUM_ROWS);
+    let x2 = Math.floor(Math.random() * NUM_COLS);
+    let y2 = Math.floor(Math.random() * NUM_ROWS);
+
+    map[`${x1},${y1}`].type = CellType.Start;
+    map[`${x2},${y2}`].type = CellType.Goal;
+    
+
+    handleWorld(map)
+
+  }, [])
 
 
   const handleType = (newType: CellType) => {

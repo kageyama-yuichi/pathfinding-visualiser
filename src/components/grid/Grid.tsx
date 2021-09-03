@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { CELL_SIZE, WIDTH, HEIGHT} from '../../helpers/Constants'
+import { CELL_SIZE, WIDTH, HEIGHT, NUM_COLS, NUM_ROWS} from '../../helpers/Constants'
 import { drawLine, drawCell } from '../../helpers/CanvasFunctions'
 import { CellType, GridCell } from '../../helpers/Interfaces';
 import {getNearestCell, getGoalCell, getStartCell} from '../../helpers/WorldFunctions'
@@ -17,42 +17,10 @@ var isDrawing = false;
 
 
 const Grid = (props: GridProps) => {
-
-  const NUM_COLS = Math.floor(WIDTH / CELL_SIZE)
-  const NUM_ROWS = Math.floor(HEIGHT / CELL_SIZE)
-
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
   const { world, handleWorld } = {...props}
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  
-  
-
-  // Initializes world on mount
-  // Scuffed map storing x,y as a string since storing array[x,y] can only be gotten by reference
-  // Has better performance than using a 2d array due to faster deep copy.
-  useEffect(() => {
-    
-    let map: { [key: string]: GridCell } = {}
-    for (let x = 0; x < NUM_COLS; x++){
-      for (let y = 0; y < NUM_ROWS; y++){
-        map[`${x},${y}`] =  {type: CellType.Empty, x: x, y: y}
-      }
-    }
-
-    // Set random start and end positions.
-    let x1 = Math.floor(Math.random() * NUM_COLS);
-    let y1 = Math.floor(Math.random() * NUM_ROWS);
-    let x2 = Math.floor(Math.random() * NUM_COLS);
-    let y2 = Math.floor(Math.random() * NUM_ROWS);
-
-    map[`${x1},${y1}`].type = CellType.Start;
-    map[`${x2},${y2}`].type = CellType.Goal;
-    
-
-    handleWorld(map)
-
-  }, [])
 
 
   // Mounts and unmounts an event listener on the canvas every time world state is changed
