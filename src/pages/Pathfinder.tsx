@@ -4,8 +4,10 @@ import {createTheme, ThemeProvider, Typography,  makeStyles } from '@material-ui
 import Header from '../components/header/Header'
 import Grid from '../components/grid/Grid'
 
-import {Algorithm, CellType, GridCell } from '../helpers/Interfaces';
-import { NUM_COLS, NUM_ROWS } from '../helpers/Constants';
+import {Algorithm, CellType, GridCell, PathfindingStep } from '../helpers/Interfaces';
+import { NUM_COLS, NUM_ROWS, STEP_SIZE } from '../helpers/Constants';
+import pathfind from '../helpers/PathfindingFunctions';
+import { getNextWorld, resetWorld } from '../helpers/WorldFunctions';
 
 const theme = createTheme({
   palette: {
@@ -24,7 +26,7 @@ const Pathfinder = (): JSX.Element => {
 
   const [type, setType] = useState(CellType.Start);
   const [world, setWorld] = useState({});
-  const [algorithm, setAlgorithm] = useState(Algorithm.AStar)
+  const [algorithm, setAlgorithm] = useState(Algorithm.BFS)
 
   // Initializes world on mount
   // Scuffed map storing x,y as a string since storing array[x,y] can only be gotten by reference
@@ -52,6 +54,30 @@ const Pathfinder = (): JSX.Element => {
 
   }, [])
 
+  const handlePathfind = () => {
+    const newWorld = resetWorld(world)
+    setWorld(newWorld)
+    const steps = pathfind(newWorld, algorithm);
+    // Remove start position
+    steps.shift()
+    
+    setNextWorld(steps, newWorld)
+    
+  }
+
+  const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+  const setNextWorld = async (steps: Array<PathfindingStep>, w: any) => {
+    if (steps.length > 0) {
+      await timeout(50);
+      let nextWorld = getNextWorld(w, steps.splice(0, STEP_SIZE))
+      setWorld(nextWorld)
+      setNextWorld(steps, nextWorld)
+      
+    }
+    return;
+  }
+
 
   const handleType = (newType: CellType) => {
     setType(newType)
@@ -75,7 +101,8 @@ const Pathfinder = (): JSX.Element => {
     type: type,
     handleType: handleType,
     algorithm: algorithm,
-    handleAlgorithm: handleAlgorithm
+    handleAlgorithm: handleAlgorithm,
+    handlePathfind: handlePathfind
   }
 
   const useStyles = makeStyles({

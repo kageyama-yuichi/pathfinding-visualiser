@@ -21,7 +21,7 @@ export interface GridCell{
   readonly y: number
 }
 
-export interface PathfindStep{
-  cell: GridCell,
+export interface PathfindingStep{
+  key: string,
   newType: CellType
 }

@@ -8,10 +8,10 @@ interface HeaderProps {
   handleType: (type: CellType) => void;
   algorithm: Algorithm;
   handleAlgorithm: (algorithm: Algorithm) => void;
-
+  handlePathfind: () => void;
 }
 
-const Header = ({ handleType, type, algorithm, handleAlgorithm }: React.PropsWithChildren<HeaderProps>) => {
+const Header = ({ handleType, type, algorithm, handleAlgorithm, handlePathfind }: React.PropsWithChildren<HeaderProps>) => {
   
   const handleTypeChange = (event: any, newType: CellType) => {
     handleType(newType)
@@ -54,7 +54,7 @@ const Header = ({ handleType, type, algorithm, handleAlgorithm }: React.PropsWit
       
 
       <Grid xs={4} item>
-        <Button variant="contained" color="primary">
+          <Button onClick={handlePathfind} variant="contained" color="primary">
         PATHFIND
         </Button>
       </Grid>

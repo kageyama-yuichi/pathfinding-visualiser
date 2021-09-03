@@ -1,5 +1,8 @@
 import { CELL_SIZE, NUM_COLS, NUM_ROWS } from "./Constants";
-import { GridCell, CellType } from "./Interfaces";
+import { GridCell, CellType, PathfindingStep } from "./Interfaces";
+
+const cloneDeep = require('lodash/cloneDeep')
+
 
 export const getNearestCell = (coords: Array<number>): Array<number> => {
   let [x, y] = [...coords];
@@ -9,19 +12,42 @@ export const getNearestCell = (coords: Array<number>): Array<number> => {
   return [x, y]
 }
 
-const getTypeOfCell = (grid: {[key: string]: GridCell}, type: CellType): string | void => {
+const getTypeOfCell = (grid: {[key: string]: GridCell}, type: CellType): string => {
   for (const key in grid) {
     if (grid[key].type === type) {
       return key;
     }
   }
+  return "";
 }
 
-export const getGoalCell = (grid: {[key: string]: GridCell}): string | void => {
+export const getGoalCell = (grid: {[key: string]: GridCell}): string => {
   return getTypeOfCell(grid, CellType.Goal)
 }
-export const getStartCell = (grid: {[key: string]: GridCell}): string | void => {
+export const getStartCell = (grid: {[key: string]: GridCell}): string => {
   return getTypeOfCell(grid, CellType.Start)
+}
+
+export const resetWorld = (world: { [key: string]: GridCell }): { [key: string]: GridCell } => {
+  let clonedWorld = cloneDeep(world)
+  for (let k in clonedWorld) {
+    if (clonedWorld[k].type === CellType.Visited) {
+      clonedWorld[k].type = CellType.Empty
+    }
+  }
+  return clonedWorld
+}
+
+export const getNextWorld = (world: { [key: string]: GridCell }, steps: Array<PathfindingStep>):  { [key: string]: GridCell }=> {
+  let clonedWorld = cloneDeep(world)
+  for (let i = 0; i < steps.length; i++){
+    
+    const step = steps[i]
+    if (clonedWorld[step.key].type === CellType.Empty) {
+      clonedWorld[step.key].type = step.newType;
+    }
+  }
+  return clonedWorld
 }
 
 export const getAdjacent = (world: { [key: string]: GridCell }, key: string): Array<string> => {
