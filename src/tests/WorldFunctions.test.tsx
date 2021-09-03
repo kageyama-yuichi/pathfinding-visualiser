@@ -30,16 +30,16 @@ describe("parseKey function", () => {
 describe("getAdjacent function", () => {
   test("Should return 2 elements for top left corner", () => {
     let key = "0,0"
-    expect(getAdjacent(world, key)).toHaveLength(2)
+    expect(getAdjacent(key)).toHaveLength(2)
   })
   test("Should return 4 elements for 1,1", () => {
     let key = "1,1"
-    expect(getAdjacent(world, key)).toHaveLength(4)
+    expect(getAdjacent(key)).toHaveLength(4)
   })
   test("Should return 2 elements for bottom right corner", () => {
     let key = `${NUM_COLS - 1}, ${NUM_ROWS - 1}`
     let expected = [`${NUM_COLS - 2},${NUM_ROWS-1}`, `${NUM_COLS - 1},${NUM_ROWS-2}`]
-    expect(getAdjacent(world, key)).toHaveLength(2)
-    expect(getAdjacent(world, key)).toEqual(expected)
+    expect(getAdjacent(key)).toHaveLength(2)
+    expect(getAdjacent(key)).toEqual(expected)
   })
 })

@@ -50,15 +50,14 @@ export const getNextWorld = (world: { [key: string]: GridCell }, steps: Array<Pa
   return clonedWorld
 }
 
-export const getAdjacent = (world: { [key: string]: GridCell }, key: string): Array<string> => {
+export const getAdjacent = (key: string): Array<string> => {
   const {x,y} = parseKey(key);
   const adjacent = [];
-
-  if (x > 0) {
-    adjacent.push(`${x-1},${y}`)
-  }
   if (y > 0) {
     adjacent.push(`${x},${y-1}`)
+  }
+  if (x > 0) {
+    adjacent.push(`${x-1},${y}`)
   }
   if (x < NUM_COLS - 1) {
     adjacent.push(`${x+1},${y}`)

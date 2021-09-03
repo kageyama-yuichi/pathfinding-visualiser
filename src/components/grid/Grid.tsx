@@ -59,10 +59,16 @@ const Grid = (props: GridProps) => {
         isDrawing = false
       }
     }
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (isDrawing) {
+        isDrawing = false
+      }
+    }
 
     canvas.addEventListener("mousedown", handleMouseDown)
     canvas.addEventListener("mousemove", handleMouseMove)
     canvas.addEventListener("mouseup", handleMouseUp)
+    canvas.addEventListener("mouseleave", handleMouseLeave)
     return () => {
       canvas.removeEventListener("mousemove", handleMouseMove)
       canvas.removeEventListener("mousedown", handleMouseDown)

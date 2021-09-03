@@ -37,23 +37,51 @@ const bfs = (world: { [key: string]: GridCell }): Array<PathfindingStep> => {
     current = queue.shift();
 
     if (world[current].type === CellType.Goal) {
-      steps.push({ key: current, newType: CellType.Goal })
       console.log("found")
       break;
     }
-    for (let adj of getAdjacent(world, current)) {
-      if (!explored.includes(adj)) {
-        explored.push(adj)
-        queue.push(adj)
+    for (let adj of getAdjacent(current)) {
+      if (world[adj].type !== CellType.Wall) {
+        if (!explored.includes(adj)) {
+          explored.push(adj)
+          queue.push(adj)
+        }
       }
+      
     }
     steps.push({key:current, newType: CellType.Visited})
+
   }
   return steps
 }
 
 const dfs = (world: { [key: string]: GridCell }): Array<PathfindingStep> => {
-  return []
+  const steps: Array<PathfindingStep> = [];
+  const stack: Array<string> = [];
+  const explored: Array<string> = []
+  const start = getStartCell(world)
+  stack.push(start)
+  let current = ""
+  while (stack.length > 0) {
+    current = stack.pop();
+    if (world[current].type === CellType.Goal) {
+      break;
+    }
+    if (!explored.includes(current)) {
+      explored.push(current)
+      for (let adj of getAdjacent(current)) {
+        if (world[adj].type !== CellType.Wall) {
+        stack.push(adj)
+          
+        }
+      }
+      steps.push({key:current, newType: CellType.Visited})
+
+    }
+
+  }
+
+  return steps;
 }
 
 const astar = (world: { [key: string]: GridCell }): Array<PathfindingStep> => {
