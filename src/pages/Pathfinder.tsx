@@ -19,8 +19,6 @@ const theme = createTheme({
   }
 });
 
-
-
 const Pathfinder = (): JSX.Element => {
 
   const [type, setType] = useState(CellType.Start);

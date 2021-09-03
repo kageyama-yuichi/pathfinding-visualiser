@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { CELL_SIZE, WIDTH, HEIGHT} from '../../helpers/Constants'
 import { drawLine, drawCell } from '../../helpers/CanvasFunctions'
 import { CellType, GridCell } from '../../helpers/Interfaces';
+import {getNearestCell, getGoalCell, getStartCell} from '../../helpers/WorldFunctions'
 import './Grid.css'
 
 const cloneDeep = require('lodash/cloneDeep')
@@ -141,29 +142,6 @@ const getCursorPosition = (canvas: HTMLCanvasElement, event: MouseEvent): Array<
   const x = (event.clientX - rect.left) * scaleX;
   const y = (event.clientY - rect.top) * scaleY;
   return [x, y]
-}
-
-const getNearestCell = (coords: Array<number>): Array<number> => {
-  let [x, y] = [...coords];
-
-  x = Math.floor(x / CELL_SIZE)
-  y = Math.floor(y / CELL_SIZE)
-  return [x, y]
-}
-
-const getTypeOfCell = (grid: {[key: string]: GridCell}, type: CellType): string | void => {
-  for (const key in grid) {
-    if (grid[key].type === type) {
-      return key;
-    }
-  }
-}
-
-const getGoalCell = (grid: {[key: string]: GridCell}): string | void => {
-  return getTypeOfCell(grid, CellType.Goal)
-}
-const getStartCell = (grid: {[key: string]: GridCell}): string | void => {
-  return getTypeOfCell(grid, CellType.Start)
 }
 
 
