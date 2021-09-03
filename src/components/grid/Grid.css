@@ -1,0 +1,7 @@
+.Grid {
+  margin-top: 1rem;
+  min-width: 80vw;
+  height: 80vh;
+  border: 2px solid #455a64;
+  background-color: #455a64;
+}
